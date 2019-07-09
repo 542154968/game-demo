@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>Document</title>
+        <style>
+            .container {
+                text-align: center;
+                width: 300px;
+                margin: 0 auto;
+            }
+            .container ul {
+                width: 300px;
+                margin: 0;
+                padding: 0;
+                list-style: none;
+            }
+            .container li {
+                width: 90px;
+                height: 90px;
+                margin: 5px;
+                float: left;
+                border-radius: 8px;
+                text-align: center;
+                line-height: 90px;
+                background: #eb2160;
+                color: #fff;
+                transition: background 0.5s;
+            }
+            .container li:nth-child(2n) {
+                background: #eb6120;
+            }
+            .container li.active {
+                background: #881136;
+            }
+            .container button {
+                margin: 30px auto;
+                padding: 5px 10px;
+                border-radius: 8px;
+                font-size: 22px;
+                border: none;
+                color: #fff;
+                background: linear-gradient(#eb2160, #eb6120);
+                cursor: pointer;
+            }
+            .container button:hover {
+                transform: scale(1.1);
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <ul>
+                <li>奔驰GLS</li>
+                <li>谢谢惠顾</li>
+                <li>御景湾别墅一套</li>
+                <li>谢谢惠顾</li>
+                <li>iphone XS MAX</li>
+                <li>谢谢惠顾</li>
+                <li>凯迪拉克CT6</li>
+                <li>谢谢惠顾</li>
+                <li>保时捷911</li>
+            </ul>
+            <button class="get-my-prize">免费抽奖</button>
+        </div>
+        <script>
+            var $button = document.querySelector('button.get-my-prize')
+            var $item = document.querySelectorAll('.container ul li')
+            var isMoving = false
+            var movingTime = null
+
+            $button.addEventListener('click', starGetPrize)
+
+            function starGetPrize(event) {
+                // 正在抽奖中
+                if (isMoving) {
+                    return
+                }
+                moveItem()
+            }
+
+            function moveItem() {
+                isMoving = true
+                moveOnce()
+            }
+
+            function moveOnce() {
+                var index = -1
+                var circle = 1
+                clearInterval(movingTime)
+                movingTime = setInterval(function() {
+                    if (index >= 8) {
+                        circle++
+                        index = -1
+                        $item[8].classList.remove('active')
+                        if (circle > 3) {
+                            clearInterval(movingTime)
+                            alert('宝贝准备好了吗！')
+                            alert('大奖即将来临！！！')
+                            alert('不好啥意思，您啥也没抽到！hhhh')
+                            isMoving = false
+                            index = null
+                            circle = null
+                            return
+                        }
+                    }
+                    index++
+                    $item[index].classList.add('active')
+                    index > 0 && $item[index - 1].classList.remove('active')
+                }, 150 - circle * 50)
+            }
+        </script>
+    </body>
+</html>
