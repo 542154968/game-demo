@@ -75,6 +75,7 @@
             var $item = document.querySelectorAll('.container ul li')
             var isMoving = false
             var movingTime = null
+            var index = -1
 
             $button.addEventListener('click', starGetPrize)
 
@@ -83,6 +84,8 @@
                 if (isMoving) {
                     return
                 }
+                index >= 0 && $item[index].classList.remove('active')
+                index = -1
                 moveItem()
             }
 
@@ -91,9 +94,8 @@
                 startMove()
             }
 
-            function startMove() {
-                var index = -1
-                var circle = 1
+            function startMove(circle) {
+                circle = circle ? circle : 0
                 var stopIndex = getIndex()
                 clearInterval(movingTime)
                 movingTime = setInterval(function() {
@@ -101,17 +103,17 @@
                         circle++
                         index = -1
                         $item[8].classList.remove('active')
+                        circle > 1 && startMove(circle)
                     }
                     index++
-
                     $item[index].classList.add('active')
                     index > 0 && $item[index - 1].classList.remove('active')
-                    if (circle > 3 && index === stopIndex) {
+                    if (circle >= 2 && index === stopIndex) {
                         clearInterval(movingTime)
                         tellUserMsg($item[index].innerText)
                         isMoving = false
                     }
-                }, 150 - circle * 50)
+                }, 100 + circle * 100)
             }
 
             function getIndex() {
