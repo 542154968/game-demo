@@ -2,14 +2,17 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+        />
         <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-        <title>Document</title>
+        <title>九宫格抽奖</title>
         <style>
             .container {
                 text-align: center;
                 width: 300px;
-                margin: 0 auto;
+                margin: 15vh auto 0;
             }
             .container ul {
                 width: 300px;
@@ -22,6 +25,7 @@
                 height: 90px;
                 margin: 5px;
                 float: left;
+                font-size: 14px;
                 border-radius: 8px;
                 text-align: center;
                 line-height: 90px;
@@ -44,6 +48,7 @@
                 color: #fff;
                 background: linear-gradient(#eb2160, #eb6120);
                 cursor: pointer;
+                outline: none;
             }
             .container button:hover {
                 transform: scale(1.1);
@@ -57,7 +62,7 @@
                 <li>谢谢惠顾</li>
                 <li>御景湾别墅一套</li>
                 <li>谢谢惠顾</li>
-                <li>iphone XS MAX</li>
+                <li>iPhone xs max</li>
                 <li>谢谢惠顾</li>
                 <li>凯迪拉克CT6</li>
                 <li>谢谢惠顾</li>
@@ -83,33 +88,44 @@
 
             function moveItem() {
                 isMoving = true
-                moveOnce()
+                startMove()
             }
 
-            function moveOnce() {
+            function startMove() {
                 var index = -1
                 var circle = 1
+                var stopIndex = getIndex()
                 clearInterval(movingTime)
                 movingTime = setInterval(function() {
                     if (index >= 8) {
                         circle++
                         index = -1
                         $item[8].classList.remove('active')
-                        if (circle > 3) {
-                            clearInterval(movingTime)
-                            alert('宝贝准备好了吗！')
-                            alert('大奖即将来临！！！')
-                            alert('不好啥意思，您啥也没抽到！hhhh')
-                            isMoving = false
-                            index = null
-                            circle = null
-                            return
-                        }
                     }
                     index++
+
                     $item[index].classList.add('active')
                     index > 0 && $item[index - 1].classList.remove('active')
+                    if (circle > 3 && index === stopIndex) {
+                        clearInterval(movingTime)
+                        tellUserMsg($item[index].innerText)
+                        isMoving = false
+                    }
                 }, 150 - circle * 50)
+            }
+
+            function getIndex() {
+                return Math.round(Math.random() * 8)
+            }
+
+            function tellUserMsg(text) {
+                alert(
+                    text === '谢谢惠顾'
+                        ? '很遗憾，您没有抽到什么奖品。'
+                        : '恭喜您获得了' +
+                              text +
+                              '，稍后系统会联系您，请保持电话畅通以便获取奖品。'
+                )
             }
         </script>
     </body>
